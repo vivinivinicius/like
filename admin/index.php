@@ -19,6 +19,7 @@
                     <a class="nav-item nav-link active" href="?p=categoria/listar">Categoria</a>
                     <a class="nav-item nav-link active" href="?p=professor/listar">Professor</a>
                     <a class="nav-item nav-link active" href="?p=curso/listar">Curso</a>
+                    <a class="nav-item nav-link active" href="?p=produto/salvar">Produto</a>
                     <a class="nav-item nav-link active" href="?p=categoria/listarLike">Categoria Like</a>
                     <a class="nav-item nav-link active" href="?p=professor/listarLike">Professor Like</a>
                     <a class="nav-item nav-link active" href="?p=curso/listarLike">Curso Like</a>
