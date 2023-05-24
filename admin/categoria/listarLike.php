@@ -2,22 +2,22 @@
 <a class="btn btn-outline-primary float-right" href="?p=categoria/salvar">Add</a>
 <br><br>
 
-<div class="col-sm-12">
+<div class= "col-am-12">
     <nav aria-label="..." class="mb-3">
         <ul class="pagination justify-content-center">
             <?php
-            foreach (range('A', 'Z') as $mostrar) {
+            foreach(range('A', 'Z') as $mostrar) {
             ?>
-                <li class="page-item">
-                    <a href="?p=categoria/listarLike&letra=<?= $mostrar ?>" class="page-link">
-                        <?= $mostrar ?>
-                    </a>
-                </li>
-            <?php
-            }
-            ?>
-        </ul>
-    </nav>
+            <li class="page-item">
+                <a href="?p=categoria/listarLike&letra=<?= $mostrar ?>" class="page-link">
+                    <?= $mostrar ?>
+                </a>
+</li>
+<?php
+}
+?>
+</ul>
+</nav>
 </div>
 
 <table class="table">
@@ -34,10 +34,10 @@
         include_once '../class/Categoria.php';
         $cat = new Categoria();
         $dados = $cat->consultarLike($letra);
-
+        
         if ($dados) {
             foreach ($dados as $mostrar) {
-        ?>
+                ?>
                 <tr>
                     <th scope="row"><?= $mostrar['id'] ?></th>
                     <td><?= $mostrar['descricao'] ?></td>
@@ -49,10 +49,10 @@
                             <i class="bi bi-trash"></i>
                         </a>
                     </td>
-                </tr>
-            <?php
+                </tr> 
+                <?php
             }
-        } else {
+         } else {
             ?>
             <tr>
                 <td colspan="3">

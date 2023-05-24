@@ -9,7 +9,7 @@ class Categoria {
     private $descricao;
     private $ramal;
     private $con;
-    //trabalhando com arquivo/imagem (abaixo)
+
     private $caminho = "../img/categoria/";
     private $imagem;
     private $temp_imagem;
@@ -38,23 +38,24 @@ class Categoria {
     function setDescricao($descricao) {
         $this->descricao = $descricao;
     }
-    
-    public function getImagem() {
+
+    function getImagem() {
         return $this->imagem;
     }
 
-    public function getTemp_imagem() {
+    function setImagem($imagem) {
+        $this->imagem = $imagem;
+    }
+     
+    function getTemp_imagem() {
         return $this->temp_imagem;
     }
 
-    public function setImagem($imagem) {
-        $this->imagem = $imagem;
-    }
-
-    public function setTemp_imagem($temp_imagem) {
+    function setTemp_imagem($temp_imagem) {
         $this->temp_imagem = $temp_imagem;
     }
-    
+
+
     function consultar() {
         try {
             //estabelece conexão com bd
@@ -76,25 +77,12 @@ class Categoria {
 
     function consultarLike($letra) {
         try {
+            
             $this->con = new Conectar();
             $sql = "SELECT * FROM categoria WHERE descricao LIKE ? ORDER BY descricao";
             $ligacao = $this->con->prepare($sql);
             $ligacao->bindValue(1, $letra . '%');
-
             return $ligacao->execute() == 1 ? $ligacao->fetchAll() : FALSE;
-        } catch (PDOException $exc) {
-            echo "Erro de bd " . $exc->getMessage();
-        }
-    }
-
-
-    function consultarPorID() {
-        try {
-            $this->con = new Conectar();
-            $sql = "SELECT * FROM categoria WHERE id = ?";
-            $sql = $this->con->prepare($sql);
-            $sql->bindValue(1, $this->id);
-            return $sql->execute() == 1 ? $sql->fetchAll() : FALSE;
         } catch (PDOException $exc) {
             echo "Erro de bd " . $exc->getMessage();
         }
@@ -118,13 +106,14 @@ class Categoria {
     function enviarArquivos() {
         $this->control = new Controles();
         return $this->control->enviarArquivo(
-                        $this->temp_imagem,
-                        $this->caminho . $this->imagem,
-                        "Enviar imagem de categoria");
-    }
+            $this->temp_imagem, 
+            $this->caminho.$this->imagem,
+            "Enviar imagem da categoria");
 
-    function excluir() {
-        try {
+    }
+    
+    function excluir(){
+         try {
             $this->con = new Conectar();
             $sql = "DELETE FROM categoria WHERE id = ?";
             $sql = $this->con->prepare($sql);
@@ -136,4 +125,35 @@ class Categoria {
         }
     }
 
+    function consultarPorID() {
+        try {
+            
+            $this->con = new Conectar();
+            
+            $sql = "SELECT * FROM categoria WHERE id = ?";
+            $sql = $this->con->prepare($sql);
+            $sql->bindValue(1, $this->id);
+
+            
+            return $sql->execute() == 1 ? $sql->fetchAll() : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+
+    function editar() {
+        try {
+            $this->con = new Conectar();
+            $sql = "UPDATE categoria SET descricao = ?, ramal = ? WHERE id = ?";
+            $sql = $this->con->prepare($sql);
+            $sql->bindValue(1, $this->descricao);
+            $sql->bindValue(2, $this->ramal);
+            $sql->bindValue(3, $this->id);
+
+            return $sql->execute() == 1 ? TRUE : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+   
 }

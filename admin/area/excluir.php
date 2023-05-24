@@ -1,10 +1,9 @@
 <?php
 $id = filter_input(INPUT_GET, 'id');
 
-include_once '../class/Curso.php';
-$cat = new Curso();
+include_once '../class/Area.php';
+$cat = new Area();
 $cat->setId($id);
-
 
 if ($cat->excluir()) {
     ?>
@@ -20,5 +19,4 @@ if ($cat->excluir()) {
     <?php
 }
 ?>
-<meta http-equiv="refresh" content="1;URL=?p=curso/listar">
-
+<meta http-equiv="refresh" content="1;URL=?p=area/listar">

@@ -1,26 +1,13 @@
-<!--admin/curso/salvar.php-->
-
 <?php
-//capturar o id da url
-$id = filter_input(INPUT_GET, 'id');
-//comunicação com class curso
-include_once '../class/Curso.php';
-$cat = new Curso();
-
-/*
- * isset serve para verificar se a variável foi utilizada
- */
-if (isset($id)) {
-    $cat->setId($id);
-    $dados = $cat->consultarPorID();
-    foreach ($dados as $mostrar) {
-        $nome = $mostrar['nome'];
-        $duracao = $mostrar['duracao'];
-    }
-}
+include_once '../class/Area.php';
+$cat = new Area();
+$dados = $cat->consultar();
 ?>
 
-<h3><?= isset($id) ? 'Editar' : 'Cadastrar' ?> curso</h3>
+
+<h3>
+    Cadastrar de Curso
+</h3>
 <a class="btn btn-outline-danger float-right" href="?p=curso/listar">Voltar</a>
 <br><br>
 
@@ -28,47 +15,60 @@ if (isset($id)) {
 
     <div class="form-group">
         <label for="exampleInputText">Nome</label>
-        <input type="text" class="form-control" id="exampleInputText" placeholder="Informe a descrição da curso" name="txtnome" value="<?= isset($id) ? $nome : '' ?>">
+        <input type="text" class="form-control" id="exampleInputText" placeholder="Informe o nome" name="txtnome"
+            value="<?= isset($id) ? $nome : '' ?>">
     </div>
     <div class="form-group">
-        <label for="exampleInputText">duracao</label>
-        <input type="number" class="form-control" id="exampleInputText" name="txtduracao" value="<?= isset($id) ? $duracao : '' ?>">
+        <label for="exampleInputText">Duracao</label>
+        <input type="text" class="form-control" id="exampleInputText" name="txtduracao"
+            value="<?= isset($id) ? $duracao : '' ?>">
     </div>
-    <input type="submit" class="btn btn-<?= isset($id) ? 'success' : 'primary' ?>" name="<?= isset($id) ? 'btneditar' : 'btnsalvar' ?>" value="<?= isset($id) ? 'Editar' : 'Cadastrar' ?>">
+    <div class="form-group">
+        <label for="exampleInputText">ID_Area</label>
+        <select class="form-control" id="selcategoria" name="selcategoria" required>
+            <?php
+            foreach ($dados as $mostrar) {
+                echo '<option value="' . $mostrar[0] . '">' . $mostrar[0] . '</option>';
+            }
+            ?>
+        </select>
+    </div>
+
+    <input type="submit" class="btn btn-primary"
+        name="btnsalvar" value="<?= isset($id) ? 'Editar' : 'Cadastrar' ?>">
 </form>
 <?php
 //se eu clicar no botão salvar
 if (filter_input(INPUT_POST, 'btnsalvar')) {
-    //capturei dados do form HTML para variáveis
     $nome = filter_input(INPUT_POST, 'txtnome');
     $duracao = filter_input(INPUT_POST, 'txtduracao');
+    $area = filter_input(INPUT_POST, 'selcategoria');
+    include_once '../class/Curso.php';
+    $prod = new Curso();
+    $prod->setNome($nome);
+    $prod->setDuracao($duracao);
+    $prod->setId_Area($area);
 
-    //enviar dados que capturei do form para class curso
-    $cat->setnome($nome);
-    $cat->setduracao($duracao);
-
-    //efetivar o cadastro
-    if ($cat->salvar()) {
-        echo '<div class="alert alert-primary mt-3" role="alert>"';
-        echo 'Cadastro efetuado com sucesso';
-        echo '</div>';
-
-        echo '<meta http-equiv="refresh" content="0.5;URL=?p=curso/listar">';
+    if ($prod->salvar()) {
+        echo '<div class="alert alert-success" role="alert>"' . "Salvo com sucesso" . '</div>';
+    } else {
+        echo '<div class="alert alert-danger" role="alert>"' . "Erro ao salvar" . '</div>';
     }
 }
+
 
 if (filter_input(INPUT_POST, 'btneditar')) {
     //capturei dados do form HTML para variáveis
     $nome = filter_input(INPUT_POST, 'txtnome');
     $duracao = filter_input(INPUT_POST, 'txtduracao');
+    $id = filter_input(INPUT_POST, 'txtid');
 
-    //enviar dados que capturei do form para class curso
-    $cat->setnome($nome);
-    $cat->setduracao($duracao);
+
+    //enviar dados que capturei do form para class Categoria
 
     //efetivar o cadastro
     if ($cat->editar()) {
-        echo '<div class="alert alert-success mt-3" role="alert>"';
+        echo '<div class="alert alert-success mt-3" role="alert">';
         echo 'Cadastro efetuado com sucesso';
         echo '</div>';
 
