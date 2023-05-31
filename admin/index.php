@@ -21,7 +21,7 @@
                 <a class="nav-item nav-link active" href="?p=pagina-inicial">Página Inicial</a>
                 <a class="nav-item nav-link active" href="?p=categoria/listar">Categoria</a>
                 <a class="nav-item nav-link active" href="?p=area/listar">Area</a>
-                <a class="nav-item nav-link active" href="?p=produto/salvar">Produto</a>
+                <a class="nav-item nav-link active" href="?p=produto/listar">Produto</a>
                 <a class="nav-item nav-link active" href="?p=categoria/listarLike">Categoria Like</a>
                 <a class="nav-item nav-link active" href="?p=curso/listar">Cursos</a>
                 <a class="nav-item nav-link active" href="?p=curso/listarLike">Curso Like</a>

@@ -25,6 +25,7 @@
                     <td>
                         <?= $mostrar['nome'] ?>
                     </td>
+                    
                     <td>
                         <a href="?p=area/salvar&id=<?= $mostrar['id'] ?>" class="btn btn-primary">
                             <i class="bi bi-pencil-square"></i>

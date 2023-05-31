@@ -1,44 +1,27 @@
 <?php
 
 include_once 'Conectar.php';
+include_once 'Controles.php';
 
-class Produto
-{
+class Produto {
+
     private $id;
     private $nome;
+    private $preco;
     private $id_categoria;
     private $con;
 
-    function getId()
-    {
-        return $this->id;
-    }
-
-    function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    function getNome()
-    {
+    function getNome() {
         return $this->nome;
     }
 
-    function setNome($nome)
-    {
+    function setNome($nome) {
         $this->nome = $nome;
     }
 
-    function getCon()
-    {
-        return $this->con;
+    function getId() {
+        return $this->id;
     }
-
-    function setCon($con)
-    {
-        $this->con = $con;
-    }
-
     function getId_categoria()
     {
         return $this->id_categoria;
@@ -48,9 +31,53 @@ class Produto
     {
         $this->id_categoria = $id_categoria;
     }
+    function getPreco() {
+        return $this->preco;
+    }
 
-    function salvar()
-    {
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setPreco($preco) {
+        $this->preco = $preco;
+    }
+
+  
+
+    function consultar() {
+        try {
+            //estabelece conexão com bd
+            $this->con = new Conectar();
+            //monta a string sql
+            $sql = "SELECT * FROM produto";
+            //faz a ligação entre a conexão com a string sql
+            $ligacao = $this->con->prepare($sql);
+            /*
+             * faz um if ternário que verifica se a consulta foi executada == 1
+             * se sim, retorna todos os registros da tabela fetchAll()
+             * se não, retorna false
+             */
+            return $ligacao->execute() == 1 ? $ligacao->fetchAll() : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+
+    function consultarLike($letra) {
+        try {
+            
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM categoria WHERE Preco LIKE ? ORDER BY id";
+            $ligacao = $this->con->prepare($sql);
+            $ligacao->bindValue(1, $letra . '%');
+            return $ligacao->execute() == 1 ? $ligacao->fetchAll() : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+
+    function salvar() {
         try {
             $this->con = new Conectar();
             $sql = "INSERT INTO produto VALUES (null, ?, ?)";
@@ -63,4 +90,51 @@ class Produto
             echo "Erro de bd " . $exc->getMessage();
         }
     }
+
+
+    
+    function excluir(){
+         try {
+            $this->con = new Conectar();
+            $sql = "DELETE FROM produto WHERE id = ?";
+            $sql = $this->con->prepare($sql);
+            $sql->bindValue(1, $this->id);
+
+            return $sql->execute() == 1 ? TRUE : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+
+    function consultarPorID() {
+        try {
+            
+            $this->con = new Conectar();
+            
+            $sql = "SELECT * FROM produto WHERE id = ?";
+            $sql = $this->con->prepare($sql);
+            $sql->bindValue(1, $this->id);
+
+            
+            return $sql->execute() == 1 ? $sql->fetchAll() : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+
+    function editar() {
+        try {
+            $this->con = new Conectar();
+            $sql = "UPDATE categoria SET Preco = ?, Nome = ? WHERE id = ?";
+            $sql = $this->con->prepare($sql);
+            $sql->bindValue(1, $this->preco);
+            $sql->bindValue(2, $this->nome);
+            $sql->bindValue(3, $this->id);
+
+            return $sql->execute() == 1 ? TRUE : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
+   
 }
