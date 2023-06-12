@@ -90,7 +90,18 @@ class Produto {
             echo "Erro de bd " . $exc->getMessage();
         }
     }
-
+    function produtoLike($letra) {
+        try {
+            
+            $this->con = new Conectar();
+            $sql = "SELECT * FROM produto WHERE nome LIKE ? ORDER BY nome";
+            $ligacao = $this->con->prepare($sql);
+            $ligacao->bindValue(1, $letra . '%');
+            return $ligacao->execute() == 1 ? $ligacao->fetchAll() : FALSE;
+        } catch (PDOException $exc) {
+            echo "Erro de bd " . $exc->getMessage();
+        }
+    }
 
     
     function excluir(){
